@@ -10,17 +10,20 @@ def collector():
     return collector
 
 @pytest.fixture
-def one_book(collector):
+def one_book_without_genre(collector):
+    book_name = '1984'
+    collector.add_new_book(book_name)
 
-    collector.add_new_book('1984')
-    collector.set_book_genre('1984', 'Фантастика')
+    return book_name
 
 @pytest.fixture
-def two_books(collector):
-    collector.add_new_book('1984')
-    collector.set_book_genre('1984', 'Фантастика')
-    collector.add_new_book('Мастер и Маргарита')
-    collector.set_book_genre('Мастер и Маргарита', 'Ужасы')
+def one_book_with_genre(collector):
+    book_name = '1984'
+    book_genre = 'Фантастика'
+    collector.add_new_book(book_name)
+    collector.set_book_genre(book_name, book_genre)
+
+    return book_name, book_genre
 
 @pytest.fixture
 def all_genres(collector):
@@ -35,8 +38,11 @@ def all_genres(collector):
     collector.add_new_book('Манюня')
     collector.set_book_genre('Манюня', 'Комедии')
 
-@pytest.fixture
-def two_favorite_books(collector, two_books):
+    return list(collector.books_genre.keys()), list(collector.books_genre.values())
 
-    collector.add_book_in_favorites('1984')
-    collector.add_book_in_favorites('Мастер и Маргарита')
+@pytest.fixture
+def one_favorite_book(collector, one_book_without_genre):
+    book_name = one_book_without_genre
+    collector.add_book_in_favorites(book_name)
+
+    return book_name
